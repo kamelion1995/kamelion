@@ -1,10 +1,13 @@
 package com.projet.memoire.Controller;
 
 import com.projet.memoire.Exception.ResourceNotFoundException;
+import com.projet.memoire.Models.Courrier;
 import com.projet.memoire.Models.Service;
 import com.projet.memoire.Models.Transmission;
+import com.projet.memoire.Repository.CourrierRepository;
 import com.projet.memoire.Repository.ServiceRepository;
 import com.projet.memoire.Repository.TransmissionRepository;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +23,18 @@ public class TransmissionController {
     @Autowired
     private TransmissionRepository transmissionRepository;
 
+    @Autowired
+    private CourrierRepository courrierRepository;
+
     @PostMapping
     public Transmission Createcanal(@RequestBody Transmission transmission){
-        return  transmissionRepository.save(transmission);
+        Transmission transmissionSaved =  transmissionRepository.save(transmission);
+        if (Objects.nonNull(transmissionSaved)){
+            Courrier courrier = transmissionSaved.getCourrier();
+            courrier.setHasCanal(true);
+            courrierRepository.save(courrier);
+        }
+        return transmissionSaved;
     }
 
     @GetMapping

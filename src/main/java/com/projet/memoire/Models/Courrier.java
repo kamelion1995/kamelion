@@ -16,8 +16,16 @@ public class Courrier {
     private String details;
     private boolean etat;
 
+    private boolean hasCanal=false;
 
 
+    public boolean isHasCanal() {
+        return hasCanal;
+    }
+
+    public void setHasCanal(boolean hasCanal) {
+        this.hasCanal = hasCanal;
+    }
 
     public Long getRefCourrier() {
         return refCourrier;
